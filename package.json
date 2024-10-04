@@ -1,0 +1,37 @@
+{
+  "name": "@jyostudio/text",
+  "version": "0.0.1",
+  "description": "text",
+  "source": "src/index.js",
+  "main": "src/index.js",
+  "unpkg": "dist/text.js",
+  "jsdelivr": "dist/text.js",
+  "type": "module",
+  "types": "types/text.d.ts",
+  "typings": "types/text.d.ts",
+  "scripts": {
+    "publish": "npm publish --access public",
+    "build": "esbuild src/index.js --bundle --minify --sourcemap --format=esm --outfile=dist/text.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jyostudio/text.git"
+  },
+  "keywords": [
+    "text"
+  ],
+  "author": "nivk",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jyostudio/text/issues"
+  },
+  "homepage": "https://github.com/jyostudio/text#readme",
+  "devDependencies": {
+    "esbuild": "^0.23.0"
+  },
+  "dependencies": {
+    "@jyostudio/enum": "^0.0.4",
+    "@jyostudio/list": "^0.0.8",
+    "@jyostudio/overload": "^0.0.12"
+  }
+}
