@@ -1,6 +1,7 @@
 import overload from "@jyostudio/overload";
 import Encoding from "./encoding.js";
 import EncodingInfo from "./encodingInfo.js";
+import DecoderNLS from "./decoderNLS.js";
 
 const CONSTURCTOR_SYMBOL = Symbol("constructor");
 
@@ -201,7 +202,77 @@ export default class UTF8Encoding extends Encoding {
         return UTF8Encoding.prototype.getString.apply(this, params);
     }
 
+    getDecoder(...params) {
+        UTF8Encoding.prototype.getDecoder = overload([], function () {
+            return new UTF8Decoder(this);
+        });
+
+        return UTF8Encoding.prototype.getDecoder.apply(this, params);
+    }
+
+    getMaxCharCount(...params) {
+        UTF8Encoding.prototype.getMaxCharCount = overload([Number], function (byteCount) {
+            if (byteCount < 0) {
+                throw new RangeError("byteCount is less than 0.");
+            }
+
+            let charCount = (byteCount + 1);
+
+            if (this.decoderFallback.maxCharCount > 1) {
+                charCount *= this.decoderFallback.maxCharCount;
+            }
+
+            if (charCount > 0x7fffffff) {
+                throw new RangeError("byteCount is out of range.");
+            }
+
+            return charCount;
+        });
+
+        return UTF8Encoding.prototype.getMaxCharCount.apply(this, params);
+    }
+
+    getMaxByteCount(...params) {
+        UTF8Encoding.prototype.getMaxByteCount = overload([Number], function (charCount) {
+            if (charCount < 0) {
+                throw new RangeError("charCount is less than 0.");
+            }
+
+            let byteCount = charCount * 3;
+
+            if (this.encoderFallback.maxCharCount > 1) {
+                byteCount += this.encoderFallback.maxCharCount - 1;
+            }
+
+            if (byteCount > 0x7fffffff) {
+                throw new RangeError("charCount is out of range.");
+            }
+
+            return byteCount;
+        });
+
+        return UTF8Encoding.prototype.getMaxByteCount.apply(this, params);
+    }
+
     static {
         Encoding.registerEncoding(new EncodingInfo(this.#UTF8_CODEPAGE, this.#DISPLAY_NAME, this.#NAME, this.#NAMES, new UTF8Encoding()));
+    }
+}
+
+export class UTF8Decoder extends DecoderNLS {
+    bits = 0;
+
+    get hasState() {
+        return this.bits != 0;
+    }
+
+    reset(...params) {
+        UTF8Decoder.prototype.reset = overload()
+            .add([], function () {
+                this.bits = 0;
+                this.fallbackBuffer?.reset();
+            });
+
+        return UTF8Decoder.prototype.reset.apply(this, params);
     }
 }

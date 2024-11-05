@@ -1,6 +1,7 @@
 import overload from "@jyostudio/overload";
 import Encoding from "./encoding.js";
 import EncodingInfo from "./encodingInfo.js";
+import DecoderNLS from "./decoderNLS.js";
 
 const CONSTURCTOR_SYMBOL = Symbol("constructor");
 
@@ -168,8 +169,59 @@ export default class UnicodeEncoding extends Encoding {
         return UnicodeEncoding.prototype.getString.apply(this, params);
     }
 
+    getDecoder(...params) {
+        UnicodeEncoding.prototype.getDecoder = overload([], function () {
+            return new UnicodeDecoder(this);
+        });
+
+        return UnicodeEncoding.prototype.getDecoder.apply(this, params);
+    }
+
+    getMaxCharCount(...params) {
+        UnicodeEncoding.prototype.getMaxCharCount = overload([Number], function (byteCount) {
+            if (byteCount < 0) {
+                throw new RangeError("byteCount is less than 0.");
+            }
+
+            let charCount = (byteCount >> 1) + (byteCount & 1) + 1;
+
+            if (this.decoderFallback.maxCharCount > 1) {
+                charCount *= this.decoderFallback.maxCharCount;
+            }
+
+            if (charCount > 0x7fffffff) {
+                throw new RangeError("byteCount is out of range.");
+            }
+
+            return charCount;
+        });
+
+        return UnicodeEncoding.prototype.getMaxCharCount.apply(this, params);
+    }
+
     static {
         Encoding.registerEncoding(new EncodingInfo(1200, this.#DISPLAY_NAME, this.#NAME, this.#NAMES.concat(["utf16le", "utf16-le", "utf16_le", "utf-16le", "utf-16-le", "utf_16_le", "utf-16_le", "utf_16-le"]), new UnicodeEncoding(false, true)));
         Encoding.registerEncoding(new EncodingInfo(1201, this.#DISPLAY_NAME, this.#NAME, this.#NAMES.concat(["utf16be", "utf16-be", "utf16_be", "utf-16be", "utf-16-be", "utf_16_be", "utf-16_be", "utf_16-be"]), new UnicodeEncoding(true, true)));
+    }
+}
+
+export class UnicodeDecoder extends DecoderNLS {
+    lastByte = -1;
+
+    lastChar = "\0";
+
+    get hasState() {
+        return (this.lastByte != -1 || this.lastChar != "\0");
+    }
+
+    reset(...params) {
+        UnicodeDecoder.prototype.reset = overload()
+            .add([], function () {
+                this.lastByte = -1;
+                this.lastChar = "\0";
+                this.fallbackBuffer?.reset();
+            });
+
+        return UnicodeDecoder.prototype.reset.apply(this, params);
     }
 }

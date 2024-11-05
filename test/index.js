@@ -1,4 +1,4 @@
-import * as E from "../dist/text.js";
+import * as E from "../src/index.js";
 
 // Create a UTF-8 encoding.
 const utf8 =  E.Encoding.utf8;
@@ -17,3 +17,5 @@ let encodedBytes = utf8.getBytes(unicodeString);
 let decodedString = utf8.getString(encodedBytes);
 console.dir("Decoded bytes:");
 console.log(decodedString);
+
+console.dir(E.Encoding.utf8.getDecoder());

@@ -1,6 +1,7 @@
 import overload from "@jyostudio/overload";
 import Encoding from "./encoding.js";
 import EncodingInfo from "./encodingInfo.js";
+import DecoderNLS from "./decoderNLS.js";
 
 const CONSTURCTOR_SYMBOL = Symbol("constructor");
 
@@ -164,8 +165,60 @@ export default class UTF32Encoding extends Encoding {
         return UTF32Encoding.prototype.getString.apply(this, params);
     }
 
+    getDecoder(...params) {
+        UTF32Encoding.prototype.getDecoder = overload([], function () {
+            return new UTF32Decoder(this);
+        });
+
+        return UTF32Encoding.prototype.getDecoder.apply(this, params);
+    }
+
+    getMaxCharCount(...params) {
+        UTF32Encoding.prototype.getMaxCharCount = overload([Number], function (byteCount) {
+            if (byteCount < 0) {
+                throw new RangeError("byteCount is less than 0.");
+            }
+
+            let charCount = (byteCount / 2) + 2;
+
+            if (this.decoderFallback.maxCharCount > 2) {
+                charCount *= this.decoderFallback.maxCharCount;
+
+                charCount /= 2;
+            }
+
+            if (charCount > 0x7fffffff) {
+                throw new RangeError("byteCount is out of range.");
+            }
+
+            return charCount;
+        });
+
+        return UTF32Encoding.prototype.getMaxCharCount.apply(this, params);
+    }
+
     static {
         Encoding.registerEncoding(new EncodingInfo(12000, this.#DISPLAY_NAME, this.#NAME, this.#NAMES.concat(["utf32le", "utf32-le", "utf32_le", "utf-32le", "utf-32-le", "utf_32_le", "utf-32_le", "utf_32-le"]), new UTF32Encoding(false, true)));
         Encoding.registerEncoding(new EncodingInfo(12001, this.#DISPLAY_NAME, this.#NAME, this.#NAMES.concat(["utf32be", "utf32-be", "utf32_be", "utf-32be", "utf-32-be", "utf_32_be", "utf-32_be", "utf_32-be"]), new UTF32Encoding(true, true)));
+    }
+}
+
+export class UTF32Decoder extends DecoderNLS {
+    iChar = 0;
+
+    readByteCount = 0;
+
+    get hasState() {
+        return (this.readByteCount != 0);
+    }
+
+    reset(...params) {
+        UTF32Decoder.prototype.reset = overload([], function () {
+            this.iChar = 0;
+            this.readByteCount = 0;
+            this.FallbackBuffer?.reset();
+        });
+
+        return UTF32Decoder.prototype.reset.call(this, ...params);
     }
 }

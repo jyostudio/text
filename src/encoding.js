@@ -1,6 +1,12 @@
 import overload from "@jyostudio/overload";
 import List from "@jyostudio/list";
 import EncodingInfo from "./encodingInfo.js";
+import EncoderFallback from "./encoderFallback.js";
+import DecoderFallback from "./decoderFallback.js";
+import InternalEncoderBestFitFallback from "./internalEncoderBestFitFallback.js";
+import InternalDecoderBestFitFallback from "./internalDecoderBestFitFallback.js";
+import DefaultDecoder from "./defaultDecoder.js";
+import DefaultEncoder from "./defaultEncoder.js";
 
 const CONSTURCTOR_SYMBOL = Symbol("constructor");
 const ENCODINGS = new List(EncodingInfo);
@@ -25,6 +31,12 @@ export default class Encoding {
     static get bigEndianUnicode() {
         return Encoding.getEncoding("utf-16-be");
     }
+
+    #codePage = 0;
+
+    #encoderFallback;
+
+    #decoderFallback;
 
     get bodyName() {
         return "";
@@ -74,8 +86,42 @@ export default class Encoding {
         return 0;
     }
 
+    get encoderFallback() {
+        return this.#encoderFallback;
+    }
+
+    set innerEncoderFallback(value) {
+        this.#encoderFallback = value;
+    }
+
+    set innerDecoderFallback(value) {
+        this.#decoderFallback = value;
+    }
+
     static [CONSTURCTOR_SYMBOL](...params) {
-        Encoding[CONSTURCTOR_SYMBOL] = overload([], function () { });
+        Encoding[CONSTURCTOR_SYMBOL] = overload()
+            .add([], function () {
+                return Encoding[CONSTURCTOR_SYMBOL].call(this, 0);
+            })
+            .add([Number], function (codePage) {
+                if (codePage < 0) {
+                    throw new RangeError("codePage is out of range.");
+                }
+
+                this.#codePage = codePage;
+
+                this.#setDefaultFallbacks();
+            })
+            .add([Number, EncoderFallback, DecoderFallback], function (codePage, encoderFallback, decoderFallback) {
+                if (codePage < 0) {
+                    throw new RangeError("codePage is out of range.");
+                }
+
+                this.#codePage = codePage;
+
+                this.#encoderFallback = encoderFallback ?? new InternalEncoderBestFitFallback(this);
+                this.#decoderFallback = decoderFallback ?? new InternalDecoderBestFitFallback(this);
+            });
 
         return Encoding[CONSTURCTOR_SYMBOL].apply(this, params);
     }
@@ -84,6 +130,23 @@ export default class Encoding {
         if (new.target === Encoding) {
             throw new Error("Cannot create an instance of the abstract class Encoding.");
         }
+
+        Object.defineProperties(this, {
+            decoderFallback: {
+                get: () => this.#decoderFallback,
+                set: overload([[DecoderFallback, null]], function (value) {
+                    if (this.isReadOnly) {
+                        throw new Error("The Encoding is read-only.");
+                    }
+
+                    if (value == null) {
+                        throw new TypeError("value is null.");
+                    }
+
+                    this.#decoderFallback = value;
+                })
+            }
+        });
 
         return Encoding[CONSTURCTOR_SYMBOL].apply(this, params);
     }
@@ -147,6 +210,11 @@ export default class Encoding {
         return Encoding.getEncodings.apply(this, params);
     }
 
+    #setDefaultFallbacks() {
+        this.#encoderFallback = new InternalEncoderBestFitFallback(this);
+        this.#decoderFallback = new InternalDecoderBestFitFallback(this);
+    }
+
     equals(...params) {
         Encoding.equals = overload([Encoding], function (value) {
             return this === value;
@@ -189,5 +257,53 @@ export default class Encoding {
             .add([ArrayBuffer, Number, Number], function (bytes, index, count) { });
 
         return Encoding.getString.apply(this, params);
+    }
+
+    getDecoder(...params) {
+        Encoding.getDecoder = overload([], function () {
+            return new DefaultDecoder(this);
+        });
+
+        return Encoding.getDecoder.apply(this, params);
+    }
+
+    getEncoder(...params) {
+        Encoding.getEncoder = overload([], function () {
+            return new DefaultEncoder(this);
+        });
+
+        return Encoding.getEncoder.apply(this, params);
+    }
+
+    getMaxCharCount(...params) {
+        Encoding.getMaxCharCount = overload([Number], function (byteCount) {
+            throw new Error("Not implemented.");
+        });
+
+        return Encoding.getMaxCharCount.apply(this, params);
+    }
+
+    getMaxByteCount(...params) {
+        Encoding.getMaxByteCount = overload([Number], function (charCount) {
+            throw new Error("Not implemented.");
+        });
+
+        return Encoding.getMaxByteCount.apply(this, params);
+    }
+
+    getBestFitBytesToUnicodeData(...params) {
+        Encoding.getBestFitBytesToUnicodeData = overload([], function () {
+            return [];
+        });
+
+        return Encoding.getBestFitBytesToUnicodeData.apply(this, params);
+    }
+
+    GetBestFitUnicodeToBytesData(...params) {
+        Encoding.GetBestFitUnicodeToBytesData = overload([], function () {
+            return [];
+        });
+
+        return Encoding.GetBestFitUnicodeToBytesData.apply(this, params);
     }
 }

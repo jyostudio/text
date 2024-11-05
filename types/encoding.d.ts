@@ -7,7 +7,6 @@ import UnicodeEncoding from "./unicodeEncoding";
 
 /**
  * 表示字符编码。
- * @private
  * @class
  */
 export default class Encoding {

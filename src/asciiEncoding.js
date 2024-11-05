@@ -1,6 +1,7 @@
 import overload from "@jyostudio/overload";
 import Encoding from "./encoding.js";
 import EncodingInfo from "./encodingInfo.js";
+import DecoderNLS from "./decoderNLS.js";
 
 const CONSTURCTOR_SYMBOL = Symbol("constructor");
 
@@ -148,6 +149,36 @@ export default class ASCIIEncoding extends Encoding {
             });
 
         return ASCIIEncoding.prototype.getString.apply(this, params);
+    }
+
+    getDecoder(...params) {
+        ASCIIEncoding.prototype.getDecoder = overload([], function () {
+            return new DecoderNLS(this);
+        });
+
+        return ASCIIEncoding.prototype.getDecoder.apply(this, params);
+    }
+
+    getMaxCharCount(...params) {
+        ASCIIEncoding.prototype.getMaxCharCount = overload([Number], function (byteCount) {
+            if (byteCount < 0) {
+                throw new RangeError("byteCount is out of range.");
+            }
+
+            let charCount = byteCount;
+
+            if (this.decoderFallback.maxCharCount > 1) {
+                charCount *= this.decoderFallback.maxCharCount;
+            }
+
+            if (charCount > 0x7fffffff) {
+                throw new RangeError("byteCount is out of range.");
+            }
+
+            return charCount;
+        });
+
+        return ASCIIEncoding.prototype.getMaxCharCount.apply(this, params);
     }
 
     static {
