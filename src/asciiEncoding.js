@@ -108,7 +108,7 @@ export default class ASCIIEncoding extends Encoding {
                 return ASCIIEncoding.#stringToUint8Array(str);
             })
             .add([String, Number, Number], function (str, index, count) {
-                if (index < 0 || count < 0 || index + count >= str.length) {
+                if (index < 0 || count < 0 || index + count > str.length) {
                     throw new RangeError("index or count is out of range.");
                 }
 
@@ -124,7 +124,7 @@ export default class ASCIIEncoding extends Encoding {
                 return this.getString(bytes).length;
             })
             .add([Uint8Array, Number, Number], function (bytes, index, count) {
-                if (index < 0 || count < 0 || index + count >= bytes.length) {
+                if (index < 0 || count < 0 || index + count > bytes.length) {
                     throw new RangeError("index or count is out of range.");
                 }
 
@@ -140,7 +140,7 @@ export default class ASCIIEncoding extends Encoding {
                 return ASCIIEncoding.#uint8ArrayToString(bytes);
             })
             .add([Uint8Array, Number, Number], function (bytes, index, count) {
-                if (index < 0 || count < 0 || index + count >= bytes.byteLength) {
+                if (index < 0 || count < 0 || index + count > bytes.byteLength) {
                     throw new RangeError("index or count is out of range.");
                 }
 

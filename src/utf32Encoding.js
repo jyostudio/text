@@ -114,7 +114,7 @@ export default class UTF32Encoding extends Encoding {
                 return UTF32Encoding.#stringToUnit32Array(s, this.#bigEndian);
             })
             .add([String, Number, Number], function (s, index, count) {
-                if (index < 0 || count < 0 || index + count >= s.length) {
+                if (index < 0 || count < 0 || index + count > s.length) {
                     throw new RangeError("index or count is out of range.");
                 }
 
@@ -130,7 +130,7 @@ export default class UTF32Encoding extends Encoding {
                 return this.getString(bytes).length;
             })
             .add([Uint8Array, Number, Number], function (bytes, index, count) {
-                if (index < 0 || count < 0 || index + count >= bytes.length) {
+                if (index < 0 || count < 0 || index + count > bytes.length) {
                     throw new RangeError("index or count is out of range.");
                 }
 
@@ -154,7 +154,7 @@ export default class UTF32Encoding extends Encoding {
                 return UTF32Encoding.#unit32ArrayToString(bytes, this.#bigEndian);
             })
             .add([Uint8Array, Number, Number], function (bytes, index, count) {
-                if (index < 0 || count < 0 || index + count >= bytes.byteLength) {
+                if (index < 0 || count < 0 || index + count > bytes.byteLength) {
                     throw new RangeError("index or count is out of range.");
                 }
 
