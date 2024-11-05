@@ -1,6 +1,6 @@
 {
   "name": "@jyostudio/text",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "text",
   "source": "src/index.js",
   "main": "src/index.js",
@@ -29,7 +29,7 @@
   "devDependencies": {
     "esbuild": "^0.23.0"
   },
-  "dependencies": {
+  "peerDependencies": {
     "@jyostudio/enum": "^0.0.4",
     "@jyostudio/list": "^0.0.8",
     "@jyostudio/overload": "^0.0.12"

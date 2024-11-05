@@ -69,6 +69,10 @@ export default class StringBuilder {
                     return this.#chars[prop];
                 }
 
+                if (typeof this[prop] === "function") {
+                    return this[prop].bind(this);
+                }
+
                 return this[prop];
             },
             set: (target, prop, value, receiver) => {
