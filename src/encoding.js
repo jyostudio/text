@@ -82,7 +82,7 @@ export default class Encoding {
 
     constructor(...params) {
         if (new.target === Encoding) {
-            throw new Error("Cannot create an instance of the abstract class Encoding.");
+            throw new Error("无法创建抽象类 Encoding 的实例。");
         }
 
         return Encoding[CONSTURCTOR_SYMBOL].apply(this, params);
@@ -112,7 +112,7 @@ export default class Encoding {
         Encoding.getEncoding = overload()
             .add([Number], function (codePage) {
                 if (codePage < 0 || codePage > 65535) {
-                    throw new RangeError("codePage is out of range.");
+                    throw new RangeError("codePage 超出范围。");
                 }
 
                 for (let i = 0; i < ENCODINGS.length; i++) {
@@ -121,7 +121,7 @@ export default class Encoding {
                     }
                 }
 
-                throw new Error("Encoding not found.");
+                throw new Error("未找到编码。");
             })
             .add([String], function (name) {
                 for (let i = 0; i < ENCODINGS.length; i++) {
@@ -133,7 +133,7 @@ export default class Encoding {
                     }
                 }
 
-                throw new Error("Encoding not found.");
+                throw new Error("未找到编码。");
             });
 
         return Encoding.getEncoding.apply(this, params);

@@ -32,7 +32,7 @@ export default class StringBuilder {
             })
             .add([String, Number, Number], function (value, startIndex, length) {
                 if (startIndex + length < 0 || startIndex + length > value.length) {
-                    throw new RangeError("startIndex and length are out of range.");
+                    throw new RangeError("startIndex 及 length 超出范围。");
                 }
 
                 const proxy = this.#initProxy();
@@ -56,7 +56,7 @@ export default class StringBuilder {
         });
 
         if (new.target !== StringBuilder) {
-            throw new Error("Cannot extends from the class StringBuilder.");
+            throw new Error("不能从 StringBuilder 类继承。");
         }
 
         return StringBuilder[CONSTURCTOR_SYMBOL].apply(this, params);
@@ -80,15 +80,15 @@ export default class StringBuilder {
                     const num = parseInt(prop, 10);
 
                     if (num < 0 || num > this.length) {
-                        throw new RangeError("Index is out of range.");
+                        throw new RangeError("索引超出范围。");
                     }
 
                     if (typeof value !== "string") {
-                        throw new TypeError("Value must be a string.");
+                        throw new TypeError("值必须是 String 类型。");
                     }
 
                     if (num >= this.maxCapacity) {
-                        throw new RangeError("Capacity is out of range.");
+                        throw new RangeError("容量超出范围。");
                     }
 
                     this.#chars[prop] = value;
@@ -133,12 +133,12 @@ export default class StringBuilder {
             })
             .add([[Array, List.T(String)], Number, Number], function (value, startIndex, count) {
                 if (this.length + count > this.maxCapacity) {
-                    throw new RangeError("Capacity is out of range.");
+                    throw new RangeError("容量超出范围。");
                 }
 
                 for (let i = 0; i < count; i++) {
                     if (value[startIndex + i].length > 1) {
-                        throw new RangeError("Value must be a char.");
+                        throw new RangeError("值必须是一个字符。");
                     }
 
                     this.#chars.push(value[startIndex + i]);
@@ -212,20 +212,20 @@ export default class StringBuilder {
             })
             .add([Number, [Array, List.T(String)], Number, Number], function (index, value, startIndex, count) {
                 if (index < 0 || index > this.length) {
-                    throw new RangeError("Index is out of range.");
+                    throw new RangeError("索引超出范围。");
                 }
 
                 if (startIndex + count >= this.maxCapacity) {
-                    throw new RangeError("Capacity is out of range.");
+                    throw new RangeError("容量超出范围。");
                 }
 
                 for (let i = 0; i < count; i++) {
                     if (typeof value[i] !== "string") {
-                        throw new TypeError("Value must be a char.");
+                        throw new TypeError("值必须是一个字符。");
                     }
 
                     if (value[startIndex + i].length > 1) {
-                        throw new RangeError("Value must be a char.");
+                        throw new RangeError("值必须是一个字符。");
                     }
 
                     this.#chars.splice(index + i, 0, value[startIndex + i]);
@@ -246,15 +246,15 @@ export default class StringBuilder {
     remove(...params) {
         StringBuilder.prototype.remove = overload([Number, Number], function (startIndex, length) {
             if (startIndex < 0) {
-                throw new RangeError("startIndex is out of range.");
+                throw new RangeError("startIndex 超出范围。");
             }
 
             if (length < 0) {
-                throw new RangeError("length is out of range.");
+                throw new RangeError("长度超出范围。");
             }
 
             if (startIndex + length > this.length) {
-                throw new RangeError("startIndex and length are out of range.");
+                throw new RangeError("startIndex 及 length 超出范围。");
             }
 
             this.#chars.splice(startIndex, length);
@@ -271,11 +271,11 @@ export default class StringBuilder {
             })
             .add([String, String, Number, Number], function (oldValue, newValue, startIndex, count) {
                 if (oldValue.length > 1) {
-                    throw new RangeError("oldValue must be a char.");
+                    throw new RangeError("oldValue 必须是一个字符。");
                 }
 
                 if (newValue.length > 1) {
-                    throw new RangeError("newValue must be a char.");
+                    throw new RangeError("newValue 必须是一个字符。");
                 }
 
                 for (let i = 0; i < count; i++) {
@@ -297,15 +297,15 @@ export default class StringBuilder {
             })
             .add([Number, Number], function (startIndex, length) {
                 if (startIndex < 0) {
-                    throw new RangeError("startIndex is out of range.");
+                    throw new RangeError("startIndex 超出范围。");
                 }
 
                 if (length < 0) {
-                    throw new RangeError("length is out of range.");
+                    throw new RangeError("长度超出范围。");
                 }
 
                 if (startIndex + length > this.length) {
-                    throw new RangeError("startIndex and length are out of range.");
+                    throw new RangeError("startIndex 及 length 超出范围。");
                 }
 
                 let str = "";

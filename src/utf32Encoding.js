@@ -115,7 +115,7 @@ export default class UTF32Encoding extends Encoding {
             })
             .add([String, Number, Number], function (s, index, count) {
                 if (index < 0 || count < 0 || index + count > s.length) {
-                    throw new RangeError("index or count is out of range.");
+                    throw new RangeError("索引或数量超出范围。");
                 }
 
                 return UTF32Encoding.#stringToUnit32Array(s.substring(index, index + count), this.#bigEndian);
@@ -131,7 +131,7 @@ export default class UTF32Encoding extends Encoding {
             })
             .add([Uint8Array, Number, Number], function (bytes, index, count) {
                 if (index < 0 || count < 0 || index + count > bytes.length) {
-                    throw new RangeError("index or count is out of range.");
+                    throw new RangeError("索引或数量超出范围。");
                 }
 
                 return this.getString(bytes, index, count).length;
@@ -155,7 +155,7 @@ export default class UTF32Encoding extends Encoding {
             })
             .add([Uint8Array, Number, Number], function (bytes, index, count) {
                 if (index < 0 || count < 0 || index + count > bytes.byteLength) {
-                    throw new RangeError("index or count is out of range.");
+                    throw new RangeError("索引或数量超出范围。");
                 }
 
                 return UTF32Encoding.#unit32ArrayToString(new Uint8Array(bytes.buffer, index, count), this.#bigEndian);

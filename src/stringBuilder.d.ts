@@ -25,14 +25,12 @@ export default class StringBuilder {
 
     /**
      * 初始化 StringBuilder 类的新实例。
-     * @constructor
      * @returns {StringBuilder} StringBuilder 类的新实例。
      */
     constructor();
 
     /**
      * 初始化 StringBuilder 类的新实例，该类可增长到指定的最大容量。
-     * @constructor
      * @param {Number} maxCapacity 当前字符串可包含的最大字符数。
      * @returns {StringBuilder} StringBuilder 类的新实例。
      */
@@ -40,7 +38,6 @@ export default class StringBuilder {
 
     /**
      * 使用指定的字符串初始化 StringBuilder 类的新实例。
-     * @constructor
      * @param {String} value 用于初始化实例值的字符串。
      * @returns {StringBuilder} StringBuilder 类的新实例。
      */
@@ -48,7 +45,6 @@ export default class StringBuilder {
 
     /**
      * 从指定的子字符串初始化 StringBuilder 类的新实例。
-     * @constructor
      * @param {String} value 字符串包含用于初始化此实例值的子字符串。
      * @param {Number} startIndex value 中子字符串开始的位置。
      * @param {Number} length 子字符串中的字符数。

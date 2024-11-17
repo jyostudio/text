@@ -12,14 +12,12 @@ export default class UnicodeEncoding extends Encoding {
 
   /**
    * 初始化 UnicodeEncoding 类的新实例。
-   * @constructor
    * @returns {UnicodeEncoding} UnicodeEncoding 类的新实例。
    */
   constructor();
 
   /**
    * 初始化 UnicodeEncoding 类的新实例。 参数指定是否使用 Big-Endian 字节顺序以及 UnicodeEncoding.getPreamble 方法是否返回 Unicode 字节顺序标记。
-   * @constructor
    * @param {Boolean} bigEndian 如果为 true，则使用 Big-Endian 字节顺序（从最高有效字节开始）；如果为 false，则使用 Little-Endian 字节顺序（从最低有效字节开始）。
    * @param {Boolean} byteOrderMark 如果为 true，则指定 UnicodeEncoding.getPreamble 方法返回 Unicode 字节顺序标记；否则为 false。 有关详细信息，请参阅备注部分。
    * @returns {UnicodeEncoding} UnicodeEncoding 类的新实例。

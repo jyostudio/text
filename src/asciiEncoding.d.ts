@@ -7,7 +7,6 @@ import Encoding from "./encoding";
 export default class ASCIIEncoding extends Encoding {
     /**
      * 初始化 ASCIIEncoding 类的新实例。
-     * @constructor
      * @returns {ASCIIEncoding} ASCIIEncoding 类的新实例。
      */
     constructor();

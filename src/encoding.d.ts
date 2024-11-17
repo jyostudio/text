@@ -7,7 +7,6 @@ import UnicodeEncoding from "./unicodeEncoding";
 
 /**
  * 表示字符编码。
- * @private
  * @class
  */
 export default class Encoding {
@@ -115,14 +114,12 @@ export default class Encoding {
 
     /**
      * 初始化 Encoding 类的新实例。
-     * @constructor
      * @returns {Encoding} Encoding 类的新实例。
      */
     constructor();
 
     /**
      * 初始化对应于指定代码页的 Encoding 类的新实例。
-     * @constructor
      * @param {Number} codePage 首选编码的代码页标识符。 - 或 - 0，使用默认编码。
      * @returns {Encoding} Encoding 类的新实例。
      */
@@ -130,7 +127,6 @@ export default class Encoding {
 
     /**
      * 将整个字节数组从一种编码转换为另一种编码。
-     * @static
      * @param {Encoding} srcEncoding bytes 的编码格式。
      * @param {Encoding} dstEncoding 目标编码格式。
      * @param {ArrayBuffer} bytes 要转换的字节。
@@ -140,7 +136,6 @@ export default class Encoding {
 
     /**
      * 将字节数组内某个范围的字节从一种编码转换为另一种编码。
-     * @static
      * @param {Encoding} srcEncoding 源数组 bytes 的编码。
      * @param {Encoding} dstEncoding 输出数组的编码。
      * @param {ArrayBuffer} bytes 要转换的字节数组。
@@ -152,7 +147,6 @@ export default class Encoding {
 
     /**
      * 返回与指定代码页标识符关联的编码。
-     * @static
      * @param {Number} codepage 首选编码的代码页标识符。 可能值均在 Encoding 类主题中出现的表的“代码页”一列中列出。 - 或 - 0（零），使用默认编码。
      * @returns {Encoding} 与指定代码页关联的编码。
      * @throws {RangeError} codepage 小于零或大于 65535。
@@ -161,7 +155,6 @@ export default class Encoding {
 
     /**
      * 返回与指定代码页名称关联的编码。
-     * @static
      * @param {String} name 首选编码的代码页名称。 Encoding.webName 属性返回的所有值均有效。 可能值均在 Encoding 类主题中出现的表的“名称”一列中列出。
      * @returns {Encoding} 与指定代码页关联的编码。
      * @throws {Error} name 不是有效的代码页名称。 - 或 - 代码页由 name 不支持由基础平台。
@@ -170,7 +163,6 @@ export default class Encoding {
 
     /**
      * 返回包含所有编码的集合。
-     * @static
      * @returns {List<EncodingInfo>} 包含所有编码的集合。
      */
     static getEncodings(): List<EncodingInfo>;

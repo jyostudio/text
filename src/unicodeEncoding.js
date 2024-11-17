@@ -119,7 +119,7 @@ export default class UnicodeEncoding extends Encoding {
             })
             .add([String, Number, Number], function (str, index, count) {
                 if (index < 0 || count < 0 || index + count > str.length) {
-                    throw new RangeError("index or count is out of range.");
+                    throw new RangeError("索引或数量超出范围。");
                 }
 
                 return UnicodeEncoding.#stringToUint16Array(str.substring(index, index + count), this.#bigEndian);
@@ -135,7 +135,7 @@ export default class UnicodeEncoding extends Encoding {
             })
             .add([Uint8Array, Number, Number], function (bytes, index, count) {
                 if (index < 0 || count < 0 || index + count > bytes.length) {
-                    throw new RangeError("index or count is out of range.");
+                    throw new RangeError("索引或数量超出范围。");
                 }
 
                 return this.getString(bytes, index, count).length;
@@ -159,7 +159,7 @@ export default class UnicodeEncoding extends Encoding {
             })
             .add([Uint8Array, Number, Number], function (bytes, index, count) {
                 if (index < 0 || count < 0 || index + count > bytes.length) {
-                    throw new RangeError("index or count is out of range.");
+                    throw new RangeError("索引或数量超出范围。");
                 }
 
                 return UnicodeEncoding.#uint16ArrayToString(new Uint8Array(bytes.buffer, index, count), this.#bigEndian);

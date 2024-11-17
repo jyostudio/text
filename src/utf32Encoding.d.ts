@@ -1,22 +1,20 @@
 import Encoding from "./encoding";
 
 /**
- * 表示 Unicode 字符的 UTF-8 编码。
+ * 表示 Unicode 字符的 UTF-32 编码。
  * @class
  */
-export default class UTF8Encoding extends Encoding {
+export default class UTF32Encoding extends Encoding {
     /**
-     * 初始化 UTF8Encoding 类的新实例。
-     * @constructor
-     * @returns {UTF8Encoding} UTF8Encoding 类的新实例。
+     * 初始化 UTF32Encoding 类的新实例。
+     * @returns {UTF32Encoding} UTF32Encoding 类的新实例。
      */
     constructor();
 
     /**
-     * 初始化 UTF8Encoding 类的新实例。 参数指定是否提供一个 Unicode 字节顺序标记。
-     * @constructor
-     * @param {Boolean} encoderShouldEmitUTF8Identifier 如果为 true，则指定 UTF8Encoding.getPreamble 方法返回 Unicode 字节顺序标记；否则为 false。 有关详细信息，请参阅备注部分。
-     * @returns {UTF8Encoding} UTF8Encoding 类的新实例。
+     * 初始化 UTF32Encoding 类的新实例。 参数指定是否提供一个 Unicode 字节顺序标记。
+     * @param {Boolean} encoderShouldEmitUTF8Identifier 如果为 true，则指定 UTF32Encoding.getPreamble 方法返回 Unicode 字节顺序标记；否则为 false。 有关详细信息，请参阅备注部分。
+     * @returns {UTF32Encoding} UTF32Encoding 类的新实例。
      */
     constructor(encoderShouldEmitUTF8Identifier: Boolean);
 
