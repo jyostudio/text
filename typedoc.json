@@ -3,10 +3,17 @@
         "typedoc-github-theme"
     ],
     "entryPoints": [
-        "./src/index.d.ts"
+        "./src/index.ts"
+    ],
+    "exclude": [
+        "**/*.test.ts",
+        "**/node_modules/**"
     ],
     "out": "./docs",
     "lang": "zh",
     "hideGenerator": true,
-    "disableSources": true
+    "disableSources": true,
+    "tsconfig": "tsconfig.json",
+    "suppressCommentWarningsInDeclarationFiles": true,
+    "skipErrorChecking": true
 }
