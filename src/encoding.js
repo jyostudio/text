@@ -98,10 +98,10 @@ export default class Encoding {
 
     static convert(...params) {
         Encoding.convert = overload()
-            .add([Encoding, Encoding, ArrayBuffer], function (srcEncoding, dstEncoding, bytes) {
+            .add([Encoding, Encoding, Uint8Array], function (srcEncoding, dstEncoding, bytes) {
                 return Encoding.convert.call(this, srcEncoding, dstEncoding, bytes, 0, bytes.byteLength);
             })
-            .add([Encoding, Encoding, ArrayBuffer, Number, Number], function (srcEncoding, dstEncoding, bytes, index, count) {
+            .add([Encoding, Encoding, Uint8Array, Number, Number], function (srcEncoding, dstEncoding, bytes, index, count) {
                 return dstEncoding.getBytes(srcEncoding.getString(bytes, index, count));
             });
 
@@ -171,8 +171,8 @@ export default class Encoding {
 
     getCharCount(...params) {
         Encoding.getCharCount = overload()
-            .add([ArrayBuffer], function (bytes) { })
-            .add([ArrayBuffer, Number, Number], function (bytes, index, count) { });
+            .add([Uint8Array], function (bytes) { })
+            .add([Uint8Array, Number, Number], function (bytes, index, count) { });
 
         return Encoding.getCharCount.apply(this, params);
     }
@@ -185,8 +185,8 @@ export default class Encoding {
 
     getString(...params) {
         Encoding.getString = overload()
-            .add([ArrayBuffer], function (bytes) { })
-            .add([ArrayBuffer, Number, Number], function (bytes, index, count) { });
+            .add([Uint8Array], function (bytes) { })
+            .add([Uint8Array, Number, Number], function (bytes, index, count) { });
 
         return Encoding.getString.apply(this, params);
     }

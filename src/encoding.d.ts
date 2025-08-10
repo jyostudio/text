@@ -129,21 +129,21 @@ export default class Encoding {
      * 将整个字节数组从一种编码转换为另一种编码。
      * @param {Encoding} srcEncoding bytes 的编码格式。
      * @param {Encoding} dstEncoding 目标编码格式。
-     * @param {ArrayBuffer} bytes 要转换的字节。
-     * @returns {ArrayBuffer} Uint8类型数组，其中包含将 bytes 从 srcEncoding 转换为 dstEncoding 的结果。
+     * @param {Uint8Array} bytes 要转换的字节。
+     * @returns {Uint8Array} Uint8类型数组，其中包含将 bytes 从 srcEncoding 转换为 dstEncoding 的结果。
      */
-    static convert(srcEncoding: Encoding, dstEncoding: Encoding, bytes: ArrayBuffer): ArrayBuffer;
+    static convert(srcEncoding: Encoding, dstEncoding: Encoding, bytes: Uint8Array): Uint8Array;
 
     /**
      * 将字节数组内某个范围的字节从一种编码转换为另一种编码。
      * @param {Encoding} srcEncoding 源数组 bytes 的编码。
      * @param {Encoding} dstEncoding 输出数组的编码。
-     * @param {ArrayBuffer} bytes 要转换的字节数组。
+     * @param {Uint8Array} bytes 要转换的字节数组。
      * @param {Number} index 要转换的 bytes 中第一个元素的索引。
      * @param {Number} count 要转换的字节数。
-     * @returns {ArrayBuffer} Uint8类型数组，其中包含将 bytes 中某个范围的字节从 srcEncoding 转换为 dstEncoding 的结果。
+     * @returns {Uint8Array} Uint8类型数组，其中包含将 bytes 中某个范围的字节从 srcEncoding 转换为 dstEncoding 的结果。
      */
-    static convert(srcEncoding: Encoding, dstEncoding: Encoding, bytes: ArrayBuffer, index: Number, count: Number): ArrayBuffer;
+    static convert(srcEncoding: Encoding, dstEncoding: Encoding, bytes: Uint8Array, index: Number, count: Number): Uint8Array;
 
     /**
      * 返回与指定代码页标识符关联的编码。
@@ -184,36 +184,36 @@ export default class Encoding {
     /**
      * 在派生类中重写时，将指定字符串中的所有字符编码为一个字节序列。
      * @param {String} s 包含要编码的字符的字符串。
-     * @returns {ArrayBuffer} 一个字节数组，包含对指定的字符集进行编码的结果。
+     * @returns {Uint8Array} 一个字节数组，包含对指定的字符集进行编码的结果。
      */
-    getBytes(s: String): ArrayBuffer;
+    getBytes(s: String): Uint8Array;
 
     /**
      * 在派生类中重写时，将指定字符数组中的一组字符编码为一个字节序列。
      * @param {String} s 包含要编码的字符的字符串。
      * @param {Number} charIndex 第一个要编码的字符的索引。
      * @param {Number} charCount 要编码的字符的数目。
-     * @returns {ArrayBuffer} 一个字节数组，包含对指定的字符集进行编码的结果。
+     * @returns {Uint8Array} 一个字节数组，包含对指定的字符集进行编码的结果。
      * @throws {RangeError} index 或 count 也不可小于零。 - 或 - index 和 count 不表示 s 中的有效范围。
      */
-    getBytes(s: String, charIndex: Number, charCount: Number): ArrayBuffer;
+    getBytes(s: String, charIndex: Number, charCount: Number): Uint8Array;
 
     /**
      * 在派生类中重写时，计算对指定字节数组中的所有字节进行解码所产生的字符数。
-     * @param {ArrayBuffer} bytes 包含要解码的字节序列的字节数组。
+     * @param {Uint8Array} bytes 包含要解码的字节序列的字节数组。
      * @returns {Number} 对指定字节序列进行解码所产生的字符数。
      */
-    getCharCount(bytes: ArrayBuffer): Number;
+    getCharCount(bytes: Uint8Array): Number;
 
     /**
      * 在派生类中重写时，计算对字节序列（从指定字节数组开始）进行解码所产生的字符数。
-     * @param {ArrayBuffer} bytes 包含要解码的字节序列的字节数组。
+     * @param {Uint8Array} bytes 包含要解码的字节序列的字节数组。
      * @param {Number} index 第一个要解码的字节的索引。
      * @param {Number} count 要解码的字节数。
      * @returns {Number} 对指定字节序列进行解码所产生的字符数。
      * @throws {RangeError} index 或 count 也不可小于零。 - 或 - index 和 count 不表示 bytes 中的有效范围。
      */
-    getCharCount(bytes: ArrayBuffer, index: Number, count: Number): Number;
+    getCharCount(bytes: Uint8Array, index: Number, count: Number): Number;
 
     /**
      * 在派生类中重写时，返回指定所用编码的字节序列。
@@ -223,18 +223,18 @@ export default class Encoding {
 
     /**
      * 在派生类中重写时，将指定字节数组中的所有字节解码为一个字符串。
-     * @param {ArrayBuffer} bytes 包含要解码的字节序列的字节数组。
+     * @param {Uint8Array} bytes 包含要解码的字节序列的字节数组。
      * @returns {String} 包含指定字节序列解码结果的字符串。
      */
-    getString(bytes: ArrayBuffer): String;
+    getString(bytes: Uint8Array): String;
 
     /**
      * 在派生类中重写时，将指定字节数组中的一个字节序列解码为一个字符串。
-     * @param {ArrayBuffer} bytes 包含要解码的字节序列的字节数组。
+     * @param {Uint8Array} bytes 包含要解码的字节序列的字节数组。
      * @param {Number} index 第一个要解码的字节的索引。
      * @param {Number} count 要解码的字节数。
      * @returns {String} 包含指定字节序列解码结果的字符串。
      * @throws {RangeError} index 或 count 也不可小于零。 - 或 - index 和 count 不表示 bytes 中的有效范围。
      */
-    getString(bytes: ArrayBuffer, index: Number, count: Number): String;
+    getString(bytes: Uint8Array, index: Number, count: Number): String;
 }
