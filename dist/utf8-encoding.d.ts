@@ -74,7 +74,7 @@ export default class UTF8Encoding extends Encoding {
      * @param encoderShouldEmitUTF8Identifier 指示是否提供一个 Unicode 字节顺序标记 (BOM)。
      */
     constructor(encoderShouldEmitUTF8Identifier: boolean);
-    private static [CONSTRUCTOR_SYMBOL];
+    [CONSTRUCTOR_SYMBOL](...params: any): void;
     /**
      * 计算对指定 String 中的字符进行编码时所产生的字节数。
      * @param s 包含要编码的字符集的字符串。

@@ -73,13 +73,12 @@ export default class EncodingInfo {
      * @param encoding 编码对象。
      */
     public constructor(codePage: number, displayName: string, name: string, names: string[], encoding: Encoding);
-
     public constructor(...params: any) {
-        return EncodingInfo[CONSTRUCTOR_SYMBOL].apply(this, params);
+        this[CONSTRUCTOR_SYMBOL].apply(this, params);
     }
 
-    private static [CONSTRUCTOR_SYMBOL](...params: any): EncodingInfo {
-        EncodingInfo[CONSTRUCTOR_SYMBOL] = overload([Number, String, String, Array, Encoding], function (this: EncodingInfo, codePage: number, displayName: string, name: string, names: string[], encoding: Encoding): void {
+    [CONSTRUCTOR_SYMBOL](...params: any): void {
+        EncodingInfo.prototype[CONSTRUCTOR_SYMBOL] = overload([Number, String, String, Array, Object], function (this: EncodingInfo, codePage: number, displayName: string, name: string, names: string[], encoding: any): void {
             this.#codePage = codePage;
             this.#displayName = displayName;
             this.#name = name;
@@ -87,7 +86,7 @@ export default class EncodingInfo {
             this.#encoding = encoding;
         });
 
-        return EncodingInfo[CONSTRUCTOR_SYMBOL].apply(this, params);
+        this[CONSTRUCTOR_SYMBOL].apply(this, params);
     }
 
     /**
@@ -95,7 +94,6 @@ export default class EncodingInfo {
      * @returns 一个 Encoding 对象，它对应于当前 EncodingInfo 对象。
      */
     public getEncoding(): Encoding;
-
     public getEncoding(...params: any): any {
         EncodingInfo.prototype.getEncoding = overload([], function (this: EncodingInfo): Encoding {
             return this.#encoding!;

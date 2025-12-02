@@ -153,20 +153,20 @@ export default class UTF32Encoding extends Encoding {
 
     public constructor(...params: any) {
         super();
-        return UTF32Encoding[CONSTRUCTOR_SYMBOL].apply(this, params);
+        this[CONSTRUCTOR_SYMBOL].apply(this, params);
     }
 
-    private static [CONSTRUCTOR_SYMBOL](...params: any): UTF32Encoding {
-        UTF32Encoding[CONSTRUCTOR_SYMBOL] = overload()
+    [CONSTRUCTOR_SYMBOL](...params: any): void {
+        UTF32Encoding.prototype[CONSTRUCTOR_SYMBOL] = overload()
             .add([], function (this: UTF32Encoding) {
-                return UTF32Encoding[CONSTRUCTOR_SYMBOL].call(this, false, true);
+                return UTF32Encoding.prototype[CONSTRUCTOR_SYMBOL].call(this, false, true);
             })
             .add([Boolean, Boolean], function (this: UTF32Encoding, bigEndian: boolean, byteOrderMark: boolean) {
                 this.#bigEndian = bigEndian;
                 this.#byteOrderMark = byteOrderMark;
             });
 
-        return UTF32Encoding[CONSTRUCTOR_SYMBOL].apply(this, params);
+        this[CONSTRUCTOR_SYMBOL].apply(this, params);
     };
 
     /**
@@ -176,10 +176,26 @@ export default class UTF32Encoding extends Encoding {
      * @returns 包含字符串编码结果的 Uint8Array。
      */
     static #stringToUint32Array(str: string, isBig: boolean): Uint8Array {
-        const buffer = new Uint8Array(str.length * 4);
-        const view = new DataView(buffer.buffer);
+        const codePoints: number[] = [];
         for (let i = 0; i < str.length; i++) {
-            view.setUint32(i * 4, str.charCodeAt(i), !isBig);
+            let code = str.charCodeAt(i);
+            if (code >= 0xD800 && code <= 0xDBFF) {
+                const high = code;
+                if (i + 1 < str.length) {
+                    const low = str.charCodeAt(i + 1);
+                    if (low >= 0xDC00 && low <= 0xDFFF) {
+                        code = (high - 0xD800) * 0x400 + (low - 0xDC00) + 0x10000;
+                        i++;
+                    }
+                }
+            }
+            codePoints.push(code);
+        }
+
+        const buffer = new Uint8Array(codePoints.length * 4);
+        const view = new DataView(buffer.buffer);
+        for (let i = 0; i < codePoints.length; i++) {
+            view.setUint32(i * 4, codePoints[i], !isBig);
         }
         return buffer;
     }
@@ -194,7 +210,8 @@ export default class UTF32Encoding extends Encoding {
         const view = new DataView(arr.buffer);
         let result = '';
         for (let i = 0; i < arr.byteLength / 4; i++) {
-            result += String.fromCharCode(view.getUint32(i * 4, !isBig));
+            const code = view.getUint32(i * 4, !isBig);
+            result += String.fromCodePoint(code);
         }
         return result;
     }

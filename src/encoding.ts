@@ -9,7 +9,7 @@ export default abstract class Encoding {
     /**
      * 存储已注册的编码信息的列表。
      */
-    static #ENCODINGS = new List<EncodingInfo>(EncodingInfo);
+    static #ENCODINGS = new List<EncodingInfo>(Object as any);
 
     /**
      * 获取 ASCII 格式的编码。
@@ -151,12 +151,11 @@ export default abstract class Encoding {
      * 初始化 Encoding 类的新实例。
      */
     public constructor();
-
     public constructor(...params: any) {
         if (new.target === Encoding) {
             throw new EvalError("无法创建抽象类“Encoding”的实例。");
         }
-        overload([], () => { })(...params);
+        overload([], () => { }).apply(this, params);
     }
 
     /**
@@ -164,7 +163,6 @@ export default abstract class Encoding {
      * @param encodingInfo 要注册的编码信息。
      */
     public static registerEncoding(encodingInfo: EncodingInfo): void;
-
     public static registerEncoding(...params: any): any {
         Encoding.registerEncoding = overload([EncodingInfo], function (this: typeof Encoding, encodingInfo: EncodingInfo): void {
             this.#ENCODINGS.add(encodingInfo);
@@ -181,7 +179,6 @@ export default abstract class Encoding {
      * @returns Uint8类型数组，其中包含将 bytes 从 srcEncoding 转换为 dstEncoding 的结果。
      */
     public static convert(srcEncoding: Encoding, dstEncoding: Encoding, bytes: Uint8Array): Uint8Array;
-
     /**
      * 将字节数组内某个范围的字节从一种编码转换为另一种编码。
      * @param srcEncoding 源数组 bytes 的编码。
@@ -192,7 +189,6 @@ export default abstract class Encoding {
      * @returns Uint8类型数组，其中包含将 bytes 中某个范围的字节从 srcEncoding 转换为 dstEncoding 的结果。
      */
     public static convert(srcEncoding: Encoding, dstEncoding: Encoding, bytes: Uint8Array, index: number, count: number): Uint8Array;
-
     public static convert(...params: any): any {
         Encoding.convert = overload()
             .add([Encoding, Encoding, Uint8Array], function (this: typeof Encoding, srcEncoding: Encoding, dstEncoding: Encoding, bytes: Uint8Array): Uint8Array {
@@ -213,7 +209,6 @@ export default abstract class Encoding {
      * @throws {Error} 未找到编码。
      */
     public static getEncoding(codePage: number): Encoding;
-
     /**
      * 返回与指定代码页名称关联的编码。
      * @param name 首选编码的代码页名称。 Encoding.webName 属性返回的所有值均有效。 可能值均在 Encoding 类主题中出现的表的“名称”一列中列出。
@@ -221,7 +216,6 @@ export default abstract class Encoding {
      * @throws {Error} name 不是有效的代码页名称。 - 或 - name 指定的代码页不受基础平台支持。
      */
     public static getEncoding(name: string): Encoding;
-
     public static getEncoding(...params: any): any {
         Encoding.getEncoding = overload()
             .add([Number], function (this: typeof Encoding, codePage: number): Encoding {
@@ -258,7 +252,6 @@ export default abstract class Encoding {
      * @returns 包含所有已注册编码的集合。
      */
     public static getEncodings(): ReadOnlyList<EncodingInfo>;
-
     public static getEncodings(...params: any): any {
         Encoding.getEncodings = overload([], function (this: typeof Encoding): ReadOnlyList<EncodingInfo> {
             return Encoding.#ENCODINGS.asReadOnly();
@@ -313,7 +306,6 @@ export default abstract class Encoding {
      * @returns 一个数组，包含指定所用编码的字节序列。 - 或 - 长度为零的数组（如果不需要前导码）。
      */
     public getPreamble(): Uint8Array;
-
     public getPreamble(...params: any): any {
         Encoding.prototype.getPreamble = overload([], function (this: Encoding): Uint8Array {
             return new Uint8Array(0);

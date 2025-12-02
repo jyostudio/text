@@ -1,6 +1,6 @@
 {
   "name": "@jyostudio/text",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "description": "text",
   "source": "src/index.ts",
   "main": "src/index.ts",
@@ -28,24 +28,23 @@
   },
   "homepage": "https://github.com/jyostudio/text#readme",
   "devDependencies": {
-    "@babel/core": "^7.28.0",
+    "@babel/core": "^7.28.5",
     "@babel/plugin-proposal-decorators": "^7.28.0",
-    "@babel/plugin-transform-runtime": "^7.28.0",
-    "@babel/preset-env": "^7.28.0",
-    "@babel/runtime-corejs3": "^7.28.0",
+    "@babel/plugin-transform-runtime": "^7.28.5",
+    "@babel/preset-env": "^7.28.5",
+    "@babel/runtime-corejs3": "^7.28.4",
+    "@jyostudio/enum": "^0.1.4",
+    "@jyostudio/list": "^0.1.12",
+    "@jyostudio/overload": "^0.1.12",
     "babel-loader": "^10.0.0",
     "clean-webpack-plugin": "^4.0.0",
-    "core-js": "^3.45.0",
-    "ts-loader": "^9.5.2",
-    "typedoc": "^0.28.10",
-    "typedoc-github-theme": "^0.3.0",
-    "typescript": "^5.8.3",
-    "webpack": "^5.100.2",
+    "core-js": "^3.47.0",
+    "terser-webpack-plugin": "^5.3.14",
+    "ts-loader": "^9.5.4",
+    "typedoc": "^0.28.15",
+    "typedoc-github-theme": "^0.3.1",
+    "typescript": "^5.9.3",
+    "webpack": "^5.103.0",
     "webpack-cli": "^6.0.1"
-  },
-  "dependencies": {
-    "@jyostudio/enum": "^0.1.4",
-    "@jyostudio/list": "^0.1.6",
-    "@jyostudio/overload": "^0.1.8"
   }
 }

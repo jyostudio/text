@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unit Tests - @jyostudio/text</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; }
+        .suite { margin-bottom: 20px; border: 1px solid #ccc; padding: 10px; border-radius: 5px; }
+        .suite-title { font-weight: bold; font-size: 1.2em; margin-bottom: 10px; }
+        .test { margin: 5px 0; padding: 5px; border-left: 5px solid #ccc; }
+        .test.pass { border-left-color: green; background-color: #eaffea; }
+        .test.fail { border-left-color: red; background-color: #ffeaea; }
+        .error { color: red; font-family: monospace; white-space: pre-wrap; }
+        #summary { margin-bottom: 20px; font-weight: bold; }
+        .pass-count { color: green; }
+        .fail-count { color: red; }
+    </style>
+</head>
+<body>
+    <h1>Unit Tests: @jyostudio/text</h1>
+    <div id="summary">Running tests...</div>
+    <div id="results"></div>
+
+    <script type="module" src="./main.js"></script>
+</body>
+</html>

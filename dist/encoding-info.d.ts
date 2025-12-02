@@ -34,7 +34,7 @@ export default class EncodingInfo {
      * @param encoding 编码对象。
      */
     constructor(codePage: number, displayName: string, name: string, names: string[], encoding: Encoding);
-    private static [CONSTRUCTOR_SYMBOL];
+    [CONSTRUCTOR_SYMBOL](...params: any): void;
     /**
      * 返回 Encoding 对象，它对应于当前 EncodingInfo 对象。
      * @returns 一个 Encoding 对象，它对应于当前 EncodingInfo 对象。

@@ -52,44 +52,6 @@ export default class StringBuilder {
     }
 
     /**
-     * [私有]构造函数的内部实现。
-     * @param params 构造函数参数。
-     * @returns StringBuilder 实例。
-     */
-    private static [CONSTRUCTOR_SYMBOL](...params: any): StringBuilder {
-        StringBuilder[CONSTRUCTOR_SYMBOL] = overload()
-            .add([], function (this: StringBuilder) {
-                return StringBuilder[CONSTRUCTOR_SYMBOL].call(this, "", 0, 0);
-            })
-            .add([Number], function (this: StringBuilder, maxCapacity: number) {
-                if (maxCapacity < 1) {
-                    throw new RangeError("容量必须大于 0。");
-                }
-
-                this.#maxCapacity = maxCapacity;
-                return StringBuilder[CONSTRUCTOR_SYMBOL].call(this, "", 0, 0);
-            })
-            .add([String], function (this: StringBuilder, value: string) {
-                return StringBuilder[CONSTRUCTOR_SYMBOL].call(this, value, 0, value.length);
-            })
-            .add([String, Number, Number], function (this: StringBuilder, value: string, startIndex: number, length: number) {
-                if (startIndex + length < 0 || startIndex + length > value.length) {
-                    throw new RangeError("“startIndex”加“length”超出范围。");
-                }
-
-                const proxy = this.#initProxy();
-
-                for (let i = 0; i < length; i++) {
-                    this.append(value[startIndex + i]);
-                }
-
-                return proxy;
-            });
-
-        return StringBuilder[CONSTRUCTOR_SYMBOL].apply(this, params);
-    }
-
-    /**
      * 初始化 StringBuilder 类的新实例。
      */
     public constructor();
@@ -125,6 +87,44 @@ export default class StringBuilder {
         if (new.target !== StringBuilder) {
             throw new Error("不能从 StringBuilder 类继承。");
         }
+
+        return StringBuilder[CONSTRUCTOR_SYMBOL].apply(this, params);
+    }
+
+    /**
+     * [私有]构造函数的内部实现。
+     * @param params 构造函数参数。
+     * @returns StringBuilder 实例。
+     */
+    private static [CONSTRUCTOR_SYMBOL](...params: any): StringBuilder {
+        StringBuilder[CONSTRUCTOR_SYMBOL] = overload()
+            .add([], function (this: StringBuilder) {
+                return StringBuilder[CONSTRUCTOR_SYMBOL].call(this, "", 0, 0);
+            })
+            .add([Number], function (this: StringBuilder, maxCapacity: number) {
+                if (maxCapacity < 1) {
+                    throw new RangeError("容量必须大于 0。");
+                }
+
+                this.#maxCapacity = maxCapacity;
+                return StringBuilder[CONSTRUCTOR_SYMBOL].call(this, "", 0, 0);
+            })
+            .add([String], function (this: StringBuilder, value: string) {
+                return StringBuilder[CONSTRUCTOR_SYMBOL].call(this, value, 0, value.length);
+            })
+            .add([String, Number, Number], function (this: StringBuilder, value: string, startIndex: number, length: number) {
+                if (startIndex + length < 0 || startIndex + length > value.length) {
+                    throw new RangeError("“startIndex”加“length”超出范围。");
+                }
+
+                const proxy = this.#initProxy();
+
+                for (let i = 0; i < length; i++) {
+                    this.append(value[startIndex + i]);
+                }
+
+                return proxy;
+            });
 
         return StringBuilder[CONSTRUCTOR_SYMBOL].apply(this, params);
     }
@@ -188,14 +188,12 @@ export default class StringBuilder {
      * @returns 完成追加操作后对此实例的引用。
      */
     public append(value: boolean): StringBuilder;
-
     /**
      * 向此实例追加指定字符串的副本。
      * @param value 要追加的字符串。
      * @returns 完成追加操作后对此实例的引用。
      */
     public append(value: string): StringBuilder;
-
     /**
      * 向此实例追加 Unicode 字符的字符串表示形式指定数目的副本。
      * @param value 要追加的字符。
@@ -203,7 +201,6 @@ export default class StringBuilder {
      * @returns 完成追加操作后对此实例的引用。
      */
     public append(value: string, repeatCount: number): StringBuilder;
-
     /**
      * 向此实例追加指定子字符串的副本。
      * @param value 包含要追加的子字符串的字符串。
@@ -212,14 +209,12 @@ export default class StringBuilder {
      * @returns 完成追加操作后对此实例的引用。
      */
     public append(value: string, startIndex: number, count: number): StringBuilder;
-
     /**
      * 向此实例追加指定数组中的 Unicode 字符的字符串表示形式。
      * @param value 要追加的字符数组。
      * @returns 完成追加操作后对此实例的引用。
      */
-    public append(value: string[]): StringBuilder;
-
+    public append(value: string[] | List<String>): StringBuilder;
     /**
      * 向此实例追加指定的 Unicode 字符子数组的字符串表示形式。
      * @param value 字符数组。
@@ -227,22 +222,19 @@ export default class StringBuilder {
      * @param charCount 要追加的字符数。
      * @returns 完成追加操作后对此实例的引用。
      */
-    public append(value: string[], startIndex: number, charCount: number): StringBuilder;
-
+    public append(value: string[] | List<String>, startIndex: number, charCount: number): StringBuilder;
     /**
      * 向此实例追加整数的字符串表示形式。
      * @param value 要追加的值。
      * @returns 完成追加操作后对此实例的引用。
      */
     public append(value: number): StringBuilder;
-
     /**
      * 向此实例追加指定对象的字符串表示形式。
      * @param value 要追加的对象。
      * @returns 完成追加操作后对此实例的引用。
      */
     public append(value: object): StringBuilder;
-
     public append(...params: any): StringBuilder {
         StringBuilder.prototype.append = overload()
             .add([Boolean], function (this: StringBuilder, value: boolean): StringBuilder {
@@ -264,10 +256,10 @@ export default class StringBuilder {
             .add([String, Number, Number], function (this: StringBuilder, value: string, startIndex: number, count: number): StringBuilder {
                 return this.append([...value.substr(startIndex, count)]);
             })
-            .add([[Array, List.T(String)]], function (this: StringBuilder, value: string[]): StringBuilder {
+            .add([[Array, List.T(String)]], function (this: StringBuilder, value: string[] | List<String>): StringBuilder {
                 return this.append(value, 0, value.length);
             })
-            .add([[Array, List.T(String)], Number, Number], function (this: StringBuilder, value: string[], startIndex: number, count: number): StringBuilder {
+            .add([[Array, List.T(String)], Number, Number], function (this: StringBuilder, value: string[] | List<String>, startIndex: number, count: number): StringBuilder {
                 if (this.length + count > this.maxCapacity) {
                     throw new RangeError("容量超出范围。");
                 }
@@ -356,7 +348,6 @@ export default class StringBuilder {
      * @returns 完成插入操作后对此实例的引用。
      */
     public insert(index: number, value: boolean): StringBuilder;
-
     /**
      * 向此实例的指定位置插入字符串的副本。
      * @param index 插入的位置。
@@ -364,7 +355,6 @@ export default class StringBuilder {
      * @returns 完成插入操作后对此实例的引用。
      */
     public insert(index: number, value: string): StringBuilder;
-
     /**
      * 向此实例的指定位置插入字符串的指定数量的副本。
      * @param index 插入的位置。
@@ -373,15 +363,13 @@ export default class StringBuilder {
      * @returns 完成插入操作后对此实例的引用。
      */
     public insert(index: number, value: string, repeatCount: number): StringBuilder;
-
     /**
      * 向此实例的指定位置插入字符数组。
      * @param index 插入的位置。
      * @param value 要插入的字符数组。
      * @returns 完成插入操作后对此实例的引用。
      */
-    public insert(index: number, value: string[]): StringBuilder;
-
+    public insert(index: number, value: string[] | List<String>): StringBuilder;
     /**
      * 向此实例的指定位置插入字符子数组。
      * @param index 插入的位置。
@@ -390,8 +378,7 @@ export default class StringBuilder {
      * @param charCount 要插入的字符数。
      * @returns 完成插入操作后对此实例的引用。
      */
-    public insert(index: number, value: string[], startIndex: number, charCount: number): StringBuilder;
-
+    public insert(index: number, value: string[] | List<String>, startIndex: number, charCount: number): StringBuilder;
     /**
      * 向此实例的指定位置插入数值的字符串表示形式。
      * @param index 插入的位置。
@@ -399,7 +386,6 @@ export default class StringBuilder {
      * @returns 完成插入操作后对此实例的引用。
      */
     public insert(index: number, value: number): StringBuilder;
-
     /**
      * 向此实例的指定位置插入对象的字符串表示形式。
      * @param index 插入的位置。
@@ -407,7 +393,6 @@ export default class StringBuilder {
      * @returns 完成插入操作后对此实例的引用。
      */
     public insert(index: number, value: object): StringBuilder;
-
     public insert(...params: any): StringBuilder {
         StringBuilder.prototype.insert = overload()
             .add([Number, Boolean], function (this: StringBuilder, index: number, value: boolean): StringBuilder {
@@ -426,10 +411,10 @@ export default class StringBuilder {
                 }
                 return this;
             })
-            .add([Number, [Array, List.T(String)]], function (this: StringBuilder, index: number, value: string[]): StringBuilder {
+            .add([Number, [Array, List.T(String)]], function (this: StringBuilder, index: number, value: string[] | List<String>): StringBuilder {
                 return this.insert(index, value, 0, value.length);
             })
-            .add([Number, [Array, List.T(String)], Number, Number], function (this: StringBuilder, index: number, value: string[], startIndex: number, count: number): StringBuilder {
+            .add([Number, [Array, List.T(String)], Number, Number], function (this: StringBuilder, index: number, value: string[] | List<String>, startIndex: number, count: number): StringBuilder {
                 if (index < 0 || index > this.length) {
                     throw new RangeError("索引超出范围。");
                 }
@@ -446,7 +431,7 @@ export default class StringBuilder {
                     if (value[startIndex + i].length > 1) {
                         throw new RangeError("值必须是一个字符。");
                     }
-
+                    
                     this.#chars.splice(index + i, 0, value[startIndex + i]);
                 }
 
@@ -496,7 +481,6 @@ export default class StringBuilder {
      * @returns 对此实例的引用，其中 oldValue 的所有实例被 newValue 替换。
      */
     public replace(oldValue: string, newValue: string): StringBuilder;
-
     /**
      * 将此实例的子字符串中出现的所有指定字符替换为其他指定字符。
      * @param oldValue 要替换的字符。
@@ -506,7 +490,6 @@ export default class StringBuilder {
      * @returns 对此实例的引用，其中从 startIndex 到 startIndex + count - 1 的范围内 oldValue 的所有实例被 newValue 替换。
      */
     public replace(oldValue: string, newValue: string, startIndex: number, count: number): StringBuilder;
-
     public replace(...params: any): StringBuilder {
         StringBuilder.prototype.replace = overload()
             .add([String, String], function (this: StringBuilder, oldValue: string, newValue: string): StringBuilder {
@@ -538,7 +521,6 @@ export default class StringBuilder {
      * @returns 其值与此实例相同的字符串。
      */
     public toString(): string;
-
     /**
      * 将此实例中子字符串的值转换为 String。
      * @param startIndex 此实例内子字符串的起始位置。
@@ -546,7 +528,6 @@ export default class StringBuilder {
      * @returns 一个字符串，其值与此实例的指定子字符串相同。
      */
     public toString(startIndex: number, length: number): string;
-
     public toString(...params: any): string {
         StringBuilder.prototype.toString = overload()
             .add([], function (this: StringBuilder): string {

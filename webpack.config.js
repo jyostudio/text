@@ -2,6 +2,8 @@
 import path from "path";
 // 引入clean插件
 import { CleanWebpackPlugin } from "clean-webpack-plugin";
+// 引入terser插件
+import TerserPlugin from "terser-webpack-plugin";
 import { fileURLToPath } from "url";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -9,7 +11,16 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 // webpack中的所有配置信息，都应该写在这里
 export default {
     // 指定入口文件
-    entry: "./src/index.ts",
+    entry: {
+        index: "./src/index.ts",
+        "encoding-info": "./src/encoding-info.ts",
+        encoding: { import: "./src/encoding.ts", dependOn: "encoding-info" },
+        "ascii-encoding": { import: "./src/ascii-encoding.ts", dependOn: "encoding" },
+        "utf8-encoding": { import: "./src/utf8-encoding.ts", dependOn: "encoding" },
+        "unicode-encoding": { import: "./src/unicode-encoding.ts", dependOn: "encoding" },
+        "utf32-encoding": { import: "./src/utf32-encoding.ts", dependOn: "encoding" },
+        "string-builder": "./src/string-builder.ts"
+    },
     // 设置打包模式
     mode: "production",
     // 指定打包文件所在目录
@@ -17,7 +28,7 @@ export default {
         // 指定打包文件的目录
         path: path.resolve(__dirname, "dist"),
         // 打包后文件的文件名
-        filename: "index.js",
+        filename: "[name].js",
         // 告诉webpack不适用箭头
         environment: {
             arrowFunction: false
@@ -26,6 +37,14 @@ export default {
     },
     experiments: {
         outputModule: true // 启用ES Modules输出
+    },
+    optimization: {
+        minimize: true,
+        minimizer: [
+            new TerserPlugin({
+                extractComments: false,
+            }),
+        ],
     },
     //指定webpack打包时要是用的模块
     module: {

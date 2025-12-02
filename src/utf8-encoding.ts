@@ -142,11 +142,11 @@ export default class UTF8Encoding extends Encoding {
 
     public constructor(...params: any) {
         super();
-        return UTF8Encoding[CONSTRUCTOR_SYMBOL].apply(this, params);
+        this[CONSTRUCTOR_SYMBOL].apply(this, params);
     }
 
-    private static [CONSTRUCTOR_SYMBOL](...params: any): UTF8Encoding {
-        UTF8Encoding[CONSTRUCTOR_SYMBOL] = overload()
+    [CONSTRUCTOR_SYMBOL](...params: any): void {
+        UTF8Encoding.prototype[CONSTRUCTOR_SYMBOL] = overload()
             .add([], function (this: UTF8Encoding) {
                 this.#emitUTF8Identifier = false;
             })
@@ -154,7 +154,7 @@ export default class UTF8Encoding extends Encoding {
                 this.#emitUTF8Identifier = encoderShouldEmitUTF8Identifier;
             });
 
-        return UTF8Encoding[CONSTRUCTOR_SYMBOL].apply(this, params);
+        return this[CONSTRUCTOR_SYMBOL].apply(this, params);
     };
 
     /**
@@ -166,6 +166,19 @@ export default class UTF8Encoding extends Encoding {
         const utf8 = [];
         for (let i = 0; i < str.length; i++) {
             let charCode = str.charCodeAt(i);
+
+            // Check for surrogate pair
+            if (charCode >= 0xD800 && charCode <= 0xDBFF) {
+                const high = charCode;
+                if (i + 1 < str.length) {
+                    const low = str.charCodeAt(i + 1);
+                    if (low >= 0xDC00 && low <= 0xDFFF) {
+                        charCode = (high - 0xD800) * 0x400 + (low - 0xDC00) + 0x10000;
+                        i++; // Skip low surrogate
+                    }
+                }
+            }
+
             if (charCode < 0x80) {
                 utf8.push(charCode);
             } else if (charCode < 0x800) {
@@ -192,7 +205,7 @@ export default class UTF8Encoding extends Encoding {
      */
     static #uint8ArrayToString(arr: Uint8Array): string {
         let out: string, i: number, len: number, c: number;
-        let char2: number, char3: number;
+        let char2: number, char3: number, char4: number;
 
         out = "";
         len = arr.length;
@@ -216,6 +229,19 @@ export default class UTF8Encoding extends Encoding {
                     out += String.fromCharCode(((c & 0x0F) << 12) |
                         ((char2 & 0x3F) << 6) |
                         ((char3 & 0x3F) << 0));
+                    break;
+                case 15:
+                    // 1111 0xxx 10xx xxxx 10xx xxxx 10xx xxxx
+                    if ((c & 0x08) === 0) { // Ensure it's 11110xxx
+                        char2 = arr[i++];
+                        char3 = arr[i++];
+                        char4 = arr[i++];
+                        const codePoint = ((c & 0x07) << 18) |
+                            ((char2 & 0x3F) << 12) |
+                            ((char3 & 0x3F) << 6) |
+                            (char4 & 0x3F);
+                        out += String.fromCodePoint(codePoint);
+                    }
                     break;
             }
         }

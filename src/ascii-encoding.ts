@@ -128,15 +128,14 @@ export default class ASCIIEncoding extends Encoding {
      * 初始化 ASCIIEncoding 类的新实例。
      */
     public constructor();
-
     public constructor(...params: any) {
         super();
-        return ASCIIEncoding[CONSTRUCTOR_SYMBOL].apply(this, params);
+        this[CONSTRUCTOR_SYMBOL].apply(this, params);
     }
 
-    private static [CONSTRUCTOR_SYMBOL](...params: any): ASCIIEncoding {
-        ASCIIEncoding[CONSTRUCTOR_SYMBOL] = overload([], function () { });
-        return ASCIIEncoding[CONSTRUCTOR_SYMBOL].apply(this, params);
+    [CONSTRUCTOR_SYMBOL](...params: any): void {
+        ASCIIEncoding.prototype[CONSTRUCTOR_SYMBOL] = overload([], function () { });
+        this[CONSTRUCTOR_SYMBOL].apply(this, params);
     };
 
     /**
@@ -191,7 +190,6 @@ export default class ASCIIEncoding extends Encoding {
      * @returns 一个字节数组，包含对指定的字符集进行编码的结果。
      */
     public override getBytes(s: string): Uint8Array;
-
     /**
      * 将指定字符串中的一组字符编码为一个字节序列。
      * @param s 包含要编码的字符的字符串。
@@ -201,8 +199,7 @@ export default class ASCIIEncoding extends Encoding {
      * @throws {RangeError} index 或 count 也不可小于零。 - 或 - index 和 count 不表示 s 中的有效范围。
      */
     public override getBytes(s: string, index: number, count: number): Uint8Array;
-
-    public getBytes(...params: any): any {
+    public override getBytes(...params: any): any {
         ASCIIEncoding.prototype.getBytes = overload()
             .add([String], function (s: string) {
                 return ASCIIEncoding.#stringToUint8Array(s);
@@ -224,7 +221,6 @@ export default class ASCIIEncoding extends Encoding {
      * @returns 对指定字节序列进行解码所产生的字符数。
      */
     public override getCharCount(bytes: Uint8Array): number;
-
     /**
      * 计算对字节序列（从指定字节数组开始）进行解码所产生的字符数。
      * @param bytes 包含要解码的字节序列的字节数组。
@@ -234,8 +230,7 @@ export default class ASCIIEncoding extends Encoding {
      * @throws {RangeError} index 或 count 也不可小于零。 - 或 - index 和 count 不表示 bytes 中的有效范围。
      */
     public override getCharCount(bytes: Uint8Array, index: number, count: number): number;
-
-    public getCharCount(...params: any): any {
+    public override getCharCount(...params: any): any {
         ASCIIEncoding.prototype.getCharCount = overload()
             .add([Uint8Array], function (this: ASCIIEncoding, bytes: Uint8Array): number {
                 return this.getString(bytes).length;
@@ -257,7 +252,6 @@ export default class ASCIIEncoding extends Encoding {
      * @returns 解码后的字符串。
      */
     public override getString(bytes: Uint8Array): string;
-
     /**
      * 将指定字节数组中的一个字节序列解码为一个字符串。
      * @param bytes 包含要解码的字节序列的字节数组。
@@ -267,8 +261,7 @@ export default class ASCIIEncoding extends Encoding {
      * @throws {RangeError} index 或 count 也不可小于零。 - 或 - index 和 count 不表示 bytes 中的有效范围。
      */
     public override getString(bytes: Uint8Array, index: number, count: number): string;
-
-    public getString(...params: any): any {
+    public override getString(...params: any): any {
         ASCIIEncoding.prototype.getString = overload()
             .add([Uint8Array], function (this: ASCIIEncoding, bytes: Uint8Array): string {
                 return ASCIIEncoding.#uint8ArrayToString(bytes);

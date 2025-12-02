@@ -1,3 +1,4 @@
+import List from "@jyostudio/list";
 declare const CONSTRUCTOR_SYMBOL: unique symbol;
 /**
  * 表示可变字符字符串。
@@ -24,12 +25,6 @@ export default class StringBuilder {
      */
     set length(value: number);
     /**
-     * [私有]构造函数的内部实现。
-     * @param params 构造函数参数。
-     * @returns StringBuilder 实例。
-     */
-    private static [CONSTRUCTOR_SYMBOL];
-    /**
      * 初始化 StringBuilder 类的新实例。
      */
     constructor();
@@ -50,6 +45,12 @@ export default class StringBuilder {
      * @param length 子字符串中的字符数。
      */
     constructor(value: string, startIndex: number, length: number);
+    /**
+     * [私有]构造函数的内部实现。
+     * @param params 构造函数参数。
+     * @returns StringBuilder 实例。
+     */
+    private static [CONSTRUCTOR_SYMBOL];
     /**
      * 实现迭代器接口。
      * @returns 字符迭代器。
@@ -87,7 +88,7 @@ export default class StringBuilder {
      * @param value 要追加的字符数组。
      * @returns 完成追加操作后对此实例的引用。
      */
-    append(value: string[]): StringBuilder;
+    append(value: string[] | List<String>): StringBuilder;
     /**
      * 向此实例追加指定的 Unicode 字符子数组的字符串表示形式。
      * @param value 字符数组。
@@ -95,7 +96,7 @@ export default class StringBuilder {
      * @param charCount 要追加的字符数。
      * @returns 完成追加操作后对此实例的引用。
      */
-    append(value: string[], startIndex: number, charCount: number): StringBuilder;
+    append(value: string[] | List<String>, startIndex: number, charCount: number): StringBuilder;
     /**
      * 向此实例追加整数的字符串表示形式。
      * @param value 要追加的值。
@@ -160,7 +161,7 @@ export default class StringBuilder {
      * @param value 要插入的字符数组。
      * @returns 完成插入操作后对此实例的引用。
      */
-    insert(index: number, value: string[]): StringBuilder;
+    insert(index: number, value: string[] | List<String>): StringBuilder;
     /**
      * 向此实例的指定位置插入字符子数组。
      * @param index 插入的位置。
@@ -169,7 +170,7 @@ export default class StringBuilder {
      * @param charCount 要插入的字符数。
      * @returns 完成插入操作后对此实例的引用。
      */
-    insert(index: number, value: string[], startIndex: number, charCount: number): StringBuilder;
+    insert(index: number, value: string[] | List<String>, startIndex: number, charCount: number): StringBuilder;
     /**
      * 向此实例的指定位置插入数值的字符串表示形式。
      * @param index 插入的位置。

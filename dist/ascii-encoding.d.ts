@@ -69,7 +69,7 @@ export default class ASCIIEncoding extends Encoding {
      * 初始化 ASCIIEncoding 类的新实例。
      */
     constructor();
-    private static [CONSTRUCTOR_SYMBOL];
+    [CONSTRUCTOR_SYMBOL](...params: any): void;
     /**
      * 计算对指定 String 中的字符进行编码时所产生的字节数。
      * @param s 包含要编码的字符集的字符串。
