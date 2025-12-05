@@ -1,6 +1,6 @@
 {
   "name": "@jyostudio/text",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "description": "text",
   "source": "src/index.ts",
   "main": "src/index.ts",
@@ -34,7 +34,7 @@
     "@babel/preset-env": "^7.28.5",
     "@babel/runtime-corejs3": "^7.28.4",
     "@jyostudio/enum": "^0.1.4",
-    "@jyostudio/list": "^0.1.12",
+    "@jyostudio/list": "^0.1.13",
     "@jyostudio/overload": "^0.1.12",
     "babel-loader": "^10.0.0",
     "clean-webpack-plugin": "^4.0.0",
